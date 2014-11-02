@@ -16,5 +16,5 @@ int main() {
   char to[] = "hello";
   char from[] = "hi";
   printf("%s\n", strcpy(to, from));
-  return 1;
+  return 2;
 }
