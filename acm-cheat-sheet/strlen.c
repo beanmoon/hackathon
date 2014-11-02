@@ -8,5 +8,6 @@ size_t strlen2(char * str){
 }
 
 int main(){
+  printf("%s\n","hello");
   printf("%lu\n", strlen2("hello,world"));
 }
