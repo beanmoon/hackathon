@@ -10,15 +10,15 @@ char * strstr2(const char *str, const char *s){
   }
   
   for(p1=str; *p_advance; p_advance++){
-    char *p_old = p1;
+    char *p1_old = p1;
     p2 = s;
     while(*p1 && *p2 && *p1 == *p2){
       p1++; 
       p2++;
     }
 
-    if(!*p2) return p1;
-    p1++;
+    if(!*p2) return p1_old;
+    p1 = p1_old+1;
   }
 
 }
