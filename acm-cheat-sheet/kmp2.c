@@ -1,5 +1,3 @@
-
-
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
@@ -29,15 +27,8 @@ void KMPSearch(char *pat, char *txt)
 	  j++;
 	  i++;
 	}
- 
-      if (j == M)
-	{
-	  printf("Found pattern at index %d \n", i-j);
-	  j = lps[j-1];
-	}
- 
       // mismatch after j matches
-      else if (i < N && pat[j] != txt[i])
+      else if (i < N)
 	{
 	  // Do not match lps[0..lps[j-1]] characters,
 	  // they will match anyway
@@ -46,6 +37,13 @@ void KMPSearch(char *pat, char *txt)
 	  else
 	    i = i+1;
 	}
+ 
+      if (j == M)
+	{
+	  printf("Found pattern at index %d \n", i-j);
+	  j = lps[j-1];
+	}
+ 
     }
   free(lps); // to avoid memory leak
 }
@@ -91,7 +89,7 @@ int main()
   //  char *txt = "ABABDABACDABABCABAB";
   //  char *pat = "ABABCABAB";
   char *txt = "abbaabb";
-  char *pat = "abbaabba";
+  char *pat = "aaacaaaa";
   KMPSearch(pat, txt);
   return 0;
 }

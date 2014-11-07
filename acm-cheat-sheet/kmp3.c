@@ -33,7 +33,6 @@ void KMPSearch(char *pat, char *txt)
 	  printf("Found pattern at index %d \n", i-j);
 	  j = lps[j-1];
 	}
- 
       // mismatch after j matches
       else if (i < N && pat[j] != txt[i])
 	{
@@ -44,6 +43,7 @@ void KMPSearch(char *pat, char *txt)
 	  else
 	    i = i+1;
 	}
+ 
     }
   free(lps); // to avoid memory leak
 }
@@ -89,7 +89,7 @@ int main()
   //  char *txt = "ABABDABACDABABCABAB";
   //  char *pat = "ABABCABAB";
   char *txt = "abbaabb";
-  char *pat = "abbaabba";
+  char *pat = "aaacaaaa";
   KMPSearch(pat, txt);
   return 0;
 }
