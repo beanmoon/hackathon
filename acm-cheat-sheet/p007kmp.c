@@ -1,35 +1,12 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-void computeLPSArray(char *pat, int *lps){
-  int plen = strlen(pat);
-  int i=1, j, len=0;
-  lps[0] = 0;
-
-  while(i < plen){
-    if(pat[i] == pat[len]){
-      len++;
-      pat[i] = len;
-    }
-  }
-
-}
-
-int main() {
-  char * pattern = "aaacaaaa";
-  int i = 0, len=strlen(pattern);
-  int next[len];
-  for(; i<len; i++)
-    next[i] = -2;
-  compute_prefix(pattern, next);
-  //GetNextval(pattern, next);
-  for(i=0; i<len; i++)
-    printf("%d\n", next[i]);
-}
-
-
 /*
+ * @brief 计算部分匹配表,即 next 数组. *
+ * @param[in] pattern 模式串
+ * @param[out] next next 数组
+ * @return 无 */
 void compute_prefix(const char *pattern, int next[]) {
   int i;
   int j = -1;
@@ -41,31 +18,33 @@ void compute_prefix(const char *pattern, int next[]) {
     next[i] = j; }
 }
 
+int kmp(const char *text, const char *pattern) {
+  int i;
+  int j = -1;
+  const int n = strlen(text);
+  const int m = strlen(pattern);
+  if (n == 0 && m == 0) return 0; /* "","" */
+  if (m == 0) return 0;  /* "a","" */
+  int *next = (int*)malloc(sizeof(int) * m);
+  compute_prefix(pattern, next);
+  for(int index = 0; index < m; index++)
+    printf("%d\n", next[index]);
+  for (i = 0; i < n; i++) {
+    while (j > -1 && pattern[j + 1] != text[i]) j = next[j];
+    if (text[i] == pattern[j + 1]) j++;
+    if (j == m - 1) {
+      free(next);
+      return i-j; }
+  }
+  free(next);
+  return -1; }
+int main(int argc, char *argv[]) {
+  char text[] = "ABC ABCDAB ABCDABCDABDE";
+  char pattern[] = "ABCDABD";
+  char *txt = "ABABDABACDABABCABAB";
+  char *pat = "AAACAAAA";
 
-void GetNextval(char* p, int next[])  
-{  
-  int pLen = strlen(p);  
-  next[0] = -1;  
-  int k = -1;  
-  int j = 0;  
-  while (j < pLen - 1)  
-    {  
-      //p[k]表示前缀，p[j]表示后缀    
-      if (k == -1 || p[j] == p[k])  
-        {  
-	  ++j;  
-	  ++k;  
-	  //较之前next数组求法，改动在下面4行  
-	  if (p[j] != p[k])  
-	    next[j] = k;   //之前只有这一行  
-	  else  
-	    //因为不能出现p[j] = p[ next[j ]]，所以当出现时需要继续递归，k = next[k] = next[next[k]]  
-	    next[j] = next[k];  
-        }  
-      else  
-        {  
-	  k = next[k];  
-        }  
-    }  
-}  
-*/
+  char *ch = text;
+  int i = kmp(txt, pat);
+  if (i >= 0) printf("matched @: %s\n", ch + i);
+  return 0; }
