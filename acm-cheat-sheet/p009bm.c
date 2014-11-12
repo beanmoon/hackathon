@@ -46,13 +46,16 @@ static void pre_gs(const char pattern[], int gs[]) {
   const int m = strlen(pattern);
   int *suff = (int*)malloc(sizeof(int) * (m + 1));
   suffixes(pattern, suff);
-  for (i = 0; i < m; ++i) gs[i] = m;
+  for (i = 0; i < m; ++i) 
+    gs[i] = m;
   j = 0;
   for (i = m - 1; i >= 0; --i) 
     if (suff[i] == i + 1)
       for (; j < m - 1 - i; ++j) 
 	if (gs[j] == m)
 	  gs[j] = m - 1 - i;
+  for(int index = 0; index < m; index++)
+    printf("gs[%d] = %d\n", index, gs[index]);
   for (i = 0; i <= m - 2; ++i)
     gs[m - 1 - suff[i]] = m - 1 - i;
   free(suff);
@@ -73,7 +76,7 @@ int boyer_moore(const char *text, const char *pattern) {
   pre_right(pattern, right);
   pre_gs(pattern, gs);
   for(int index=0; index<m+1; index++)
-    printf("%d\n", gs[index]);
+    printf("gs[%d] = %d\n", index, gs[index]);
 
   /* Searching */
   j = 0;
@@ -83,20 +86,22 @@ int boyer_moore(const char *text, const char *pattern) {
 				  j += bmGs[0]; */
       free(gs);
       return j;
-
     } else {
       const int max = gs[i] > right[(unsigned char)text[i + j]] -
 	m + 1 + i ? gs[i] : i - right[(unsigned char)text[i + j]];
       j += max;
-    } }
+    } 
+  }
   free(gs);
   return -1; 
 }
 
 
 int main() {
-  const char *text="HERE IS A SIMPLE EXAMPLE";
-  const char *pattern = "aaabbaa";
+  /* const char *text="HERE IS A SIMPLE EXAMPLE"; */
+  /* const char *pattern = "EXAMPLE"; */
+  const char *text="baaababbbaabbababa"; 
+  const char *pattern = "abbbaabb";
   const int pos = boyer_moore(text, pattern);
   printf("%d\n", pos); /* 17 */
   return 0;
