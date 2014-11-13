@@ -2,9 +2,7 @@
 #include <stdlib.h>
 
 int main(){
-  int M = 10;
-  int *lps = malloc(sizeof(int)*M);
-  lps[0] = 12;
-  printf("%d\n", lps[0]);
+  char *txt = "hello";
+  printf("%c\n", txt[-2]);
   //  printf("%d\n", strlen("hello"));
 }
