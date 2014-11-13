@@ -35,7 +35,7 @@ users = {"Angelica": {"Blues Traveler": 3.5, "Broken Bells": 2.0,
          "Veronica": {"Blues Traveler": 3.0, "Norah Jones": 5.0,
                       "Phoenix": 4.0, "Slightly Stoopid": 2.5,
                       "The Strokes": 3.0}
-}
+        }
 
 
 
@@ -58,7 +58,7 @@ class recommender:
         self.metric = metric
         if self.metric == 'pearson':
             self.fn = self.pearson
-            #
+        #
         # if data is dictionary set recommender data to it
         #
         if type(data).__name__ == 'dict':
@@ -86,7 +86,7 @@ class recommender:
         ratings = ratings[:n]
         for rating in ratings:
             print("%s\t%i" % (rating[0], rating[1]))
-            
+        
 
         
 
@@ -110,10 +110,10 @@ class recommender:
                 currentRatings = self.data[user]
             else:
                 currentRatings = {}
-                currentRatings[book] = rating
-                self.data[user] = currentRatings
-                f.close()
-                #
+            currentRatings[book] = rating
+            self.data[user] = currentRatings
+        f.close()
+        #
         # Now load books into self.productid2name
         # Books contains isbn, title, and author among other fields
         #
@@ -127,8 +127,8 @@ class recommender:
             author = fields[2].strip().strip('"')
             title = title + ' by ' + author
             self.productid2name[isbn] = title
-            f.close()
-            #
+        f.close()
+        #
         #  Now load user info into both self.userid2name and
         #  self.username2id
         #
@@ -144,15 +144,15 @@ class recommender:
                 age = fields[2].strip().strip('"')
             else:
                 age = 'NULL'
-                if age != 'NULL':
-                    value = location + '  (age: ' + age + ')'
-                else:
-                    value = location
-                    self.userid2name[userid] = value
-                    self.username2id[location] = userid
-                    f.close()
-                    print(i)
-                    
+            if age != 'NULL':
+                value = location + '  (age: ' + age + ')'
+            else:
+                value = location
+            self.userid2name[userid] = value
+            self.username2id[location] = userid
+        f.close()
+        print(i)
+                
         
     def pearson(self, rating1, rating2):
         sum_xy = 0
@@ -171,37 +171,42 @@ class recommender:
                 sum_y += y
                 sum_x2 += pow(x, 2)
                 sum_y2 += pow(y, 2)
-                if n == 0:
-                    return 0
-                    # now compute denominator
-                    denominator = (sqrt(sum_x2 - pow(sum_x, 2) / n)
-                                   * sqrt(sum_y2 - pow(sum_y, 2) / n))
-                    if denominator == 0:
-                        return 0
-                    else:
-                        return (sum_xy - (sum_x * sum_y) / n) / denominator
+        if n == 0:
+            return 0
+        # now compute denominator
+        denominator = (sqrt(sum_x2 - pow(sum_x, 2) / n)
+                       * sqrt(sum_y2 - pow(sum_y, 2) / n))
+        if denominator == 0:
+            return 0
+        else:
+            return (sum_xy - (sum_x * sum_y) / n) / denominator
 
 
     def computeNearestNeighbor(self, username):
         """creates a sorted list of users based on their distance to
         username"""
         distances = []
+        # count implys how many users there is in self.data
+        count = 0
         for instance in self.data:
+            count += 1
             if instance != username:
                 distance = self.fn(self.data[username],
                                    self.data[instance])
                 distances.append((instance, distance))
-                # sort based on distance -- closest first
-                distances.sort(key=lambda artistTuple: artistTuple[1],
-                               reverse=True)
-                return distances
+        # sort based on distance -- closest first
+        distances.sort(key=lambda artistTuple: artistTuple[1],
+                       reverse=True)
+        print "count = " + str(count)
+        return distances
 
     def recommend(self, user):
-        """Give list of recommendations"""
-        recommendations = {}
-        # first get list of users  ordered by nearness
-        nearest = self.computeNearestNeighbor(user)
-        #
+       """Give list of recommendations, yah"""
+       recommendations = {}
+       # first get list of users  ordered by nearness
+       nearest = self.computeNearestNeighbor(user)
+       # print nearest[:]
+       #
        # now get the ratings for the user
        #
        userRatings = self.data[user]
@@ -209,33 +214,31 @@ class recommender:
        # determine the total distance
        totalDistance = 0.0
        for i in range(self.k):
-           totalDistance += nearest[i][1]
-           # now iterate through the k nearest neighbors
-           # accumulating their ratings
-           for i in range(self.k):
-               # compute slice of pie 
-               weight = nearest[i][1] / totalDistance
-               # get the name of the person
-               name = nearest[i][0]
-               # get the ratings for this person
-               neighborRatings = self.data[name]
-               # get the name of the person
-               # now find bands neighbor rated that user didn't
-               for artist in neighborRatings:
-                   if not artist in userRatings:
-                       if artist not in recommendations:
-                           recommendations[artist] = (neighborRatings[artist]
-                                                      * weight)
-                       else:
-                           recommendations[artist] = (recommendations[artist]
-                                                      + neighborRatings[artist]
-                                                      * weight)
-                           # now make list from dictionary
-                           recommendations = list(recommendations.items())
-                           recommendations = [(self.convertProductID2name(k), v)
-                                              for (k, v) in recommendations]
-                           # finally sort and return
-                           recommendations.sort(key=lambda artistTuple: artistTuple[1],
-                                                reverse = True)
-                           # Return the first n items
-                           return recommendations[:self.n]
+          totalDistance += nearest[i][1]
+       # now iterate through the k nearest neighbors
+       # accumulating their ratings
+       for i in range(self.k):
+          # compute slice of pie 
+          weight = nearest[i][1] / totalDistance
+          # get the name of the person
+          name = nearest[i][0]
+          # get the ratings for this person
+          neighborRatings = self.data[name]
+          # get the name of the person
+          # now find bands neighbor rated that user didn't
+          for artist in neighborRatings:
+             if not artist in userRatings:
+                if artist not in recommendations:
+                   recommendations[artist] = (neighborRatings[artist] * weight)
+                else:
+                   recommendations[artist] = (recommendations[artist]
+                                              + neighborRatings[artist] * weight)
+       # now make list from dictionary
+       recommendations = list(recommendations.items())
+       recommendations = [(self.convertProductID2name(k), v)
+                          for (k, v) in recommendations]
+       # finally sort and return
+       recommendations.sort(key=lambda artistTuple: artistTuple[1],
+                            reverse = True)
+       # Return the first n items
+       return recommendations[:self.n]
