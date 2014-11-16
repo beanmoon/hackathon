@@ -52,7 +52,7 @@ void computeLPSArray(char *pat, int M, int *lps)
  
     lps[0] = 0; // lps[0] is always 0
     i = 1;
- 
+    //this
     // the loop calculates lps[i] for i = 1 to M-1
     while (i < M)
     {

@@ -84,28 +84,25 @@ int suffix_length(uint8_t *word, int wordlen, int pos) {
 // how far away the closest potential match is.
 void make_delta2(int *delta2, uint8_t *pat, int32_t patlen) {
   int p;
-  int last_prefix_index = patlen-1;
+  int last_prefix_index = patlen;
  
   // first loop
   for (p=patlen-1; p>=0; p--) {
-    // 'p+1' implies if the suffix of word starting after word[p] is a prefix of word
+    // 'p+1' means if the suffix of word starting after word[p] is a prefix of word
     // when p = patlen-1, is_prefix always return true
     if (is_prefix(pat, patlen, p+1)) {
       last_prefix_index = p+1;
     }
     delta2[p] = last_prefix_index + (patlen-1 - p);
-    /* printf("delta2[%d] = %d + %d = %d\n", p, last_prefix_index, (patlen-1-p),  delta2[p]); */
   }
  
   // second loop
   for (p=0; p < patlen-1; p++) {
     int slen = suffix_length(pat, patlen, p);
-    printf("p=%d, pat[%d] = %c\n", p, p-slen, pat[p-slen]);
+    /* printf("p=%d, pat[%d] = %c\n", p, p-slen, pat[p-slen]); */
     if (pat[p - slen] != pat[patlen-1 - slen]) {
       delta2[patlen-1 - slen] = patlen-1 - p + slen;
-      /* printf("delta2[%d] = %d\n", patlen-1-slen, delta2[patlen-1-slen]); */
     }
-    printf("delta2[%d] = %d\n", patlen-1-slen, delta2[patlen-1-slen]);
   }
   /* for(p = 0; p < patlen; p++) */
   /*   printf("delta2[%d] = %d\n", p, delta2[p]); */
@@ -143,7 +140,7 @@ uint8_t* boyer_moore (uint8_t *string, uint32_t stringlen, uint8_t *pat, uint32_
 }
 
 int main(){
-  char *txt = "abacabacbaBYXCDBYXaABYXCDBYXdddbcabc";
+  char *txt = "abacabacbaBcbcdddbcabcYXCDBYXaABYXCDBYXdddbcabc";
   char *pat = "cbcdddbcabc";
   printf("%s\n", boyer_moore(txt, strlen(txt), pat, strlen(pat)));
 }
