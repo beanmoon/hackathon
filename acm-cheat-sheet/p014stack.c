@@ -41,9 +41,10 @@ void stack_push(stack_type *s, stack_elem_t new){
 }
 
 stack_elem_t stack_pop(stack_type *s){
-  return s->elems[s->size--];
+  /* return s->elems[s->size--]; */
+  return s->elems[--s->size];
 }
 
-int main(){
-  return 0;
-}
+/* int main(){ */
+/*   return 0; */
+/* } */
