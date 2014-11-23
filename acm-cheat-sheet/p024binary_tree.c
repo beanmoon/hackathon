@@ -1,19 +1,19 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef int tree_node_elem_t;
 
-int visit(const tree_node_t *node){
-  printf("%d ", node->value);
-}
 typedef struct tree_node_t{
   struct tree_node_t *left;
   struct tree_node_t *right;
   tree_node_elem_t value;
 }tree_node_t;
 
+void init_btree(tree_node_t *root);
 
 int visit(const tree_node_t *node){
   printf("%d ", node->value);
+  return 0;
 }
 
 void pre_order_r(const tree_node_t *root,  int (*visit)(const tree_node_t*)){
@@ -44,62 +44,38 @@ void post_order_r(const tree_node_t *root,  int (*visit)(const tree_node_t*)){
 }
 
 int main() {
-
+  tree_node_t *root;
+  init_btree(root);
+  int (*func)(const tree_node_t* root);
+  func = visit;
+  pre_order_r(root, func);
 }
 
 
-void init_btree(node *root)
-
-{
-
-  root->data = 'A';
-
-  node * p1 = (node*)malloc(sizeof(node));
-
-  p1->data = '+';
-
-  root->lchild = p1;
-
-  node * p2 = (node*)malloc(sizeof(node));
-
-  p2->data = '*';
-
-  p1->lchild = p2;
-
-  node * p3 = (node*)malloc(sizeof(node));
-
-  p3->data = '/';
-
-  p2->lchild = p3;
-
-  node * p4 = (node*)malloc(sizeof(node));
-
-  p4->data = 'O'; p4->lchild = p4->rchild = NULL;
-
-  p3->lchild = p4;
-
-  node * q1 = (node*)malloc(sizeof(node));
-
-  q1->data = 'G'; q1->lchild = q1->rchild = NULL;
-
-  root->rchild = q1;
-
-  node * q2 = (node*)malloc(sizeof(node));
-
-  q2->data = 'H'; q2->lchild = q2->rchild = NULL;
-
-  p1->rchild = q2;
-
-  node * q3 = (node*)malloc(sizeof(node));
-
-  q3->data = 'I'; q3->lchild = q3->rchild = NULL;
-
-  p2->rchild = q3;
-
-  node * q4 = (node*)malloc(sizeof(node));
-
-  q4->data = 'J'; q4->lchild = q4->rchild = NULL;
-
-  p3->rchild = q4;
-
+void init_btree(tree_node_t *root){
+  root->value = 'A';
+  tree_node_t * p1 = (tree_node_t*)malloc(sizeof(tree_node_t));
+  p1->value = '+';
+  root->left = p1;
+  tree_node_t * p2 = (tree_node_t*)malloc(sizeof(tree_node_t));
+  p2->value = '*';
+  p1->left = p2;
+  tree_node_t * p3 = (tree_node_t*)malloc(sizeof(tree_node_t));
+  p3->value = '/';
+  p2->left = p3;
+  tree_node_t * p4 = (tree_node_t*)malloc(sizeof(tree_node_t));
+  p4->value = 'O'; p4->left = p4->right = NULL;
+  p3->left = p4;
+  tree_node_t * q1 = (tree_node_t*)malloc(sizeof(tree_node_t));
+  q1->value = 'G'; q1->left = q1->right = NULL;
+  root->right = q1;
+  tree_node_t * q2 = (tree_node_t*)malloc(sizeof(tree_node_t));
+  q2->value = 'H'; q2->left = q2->right = NULL;
+  p1->right = q2;
+  tree_node_t * q3 = (tree_node_t*)malloc(sizeof(tree_node_t));
+  q3->value = 'I'; q3->left = q3->right = NULL;
+  p2->right = q3;
+  tree_node_t * q4 = (tree_node_t*)malloc(sizeof(tree_node_t));
+  q4->value = 'J'; q4->left = q4->right = NULL;
+  p3->right = q4;
 }
