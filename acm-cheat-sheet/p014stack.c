@@ -7,7 +7,8 @@
  */
 
 /* typedef int stack_elem_t; */
-typedef void * stack_elem_t;
+//define stack_elem_t to (void *) to fit in p024binary_tree.c
+typedef void * stack_elem_t; 
 
 
 typedef struct{
