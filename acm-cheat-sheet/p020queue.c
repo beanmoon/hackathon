@@ -7,7 +7,9 @@
  * @author beanmoon
  */
 
-typedef int queue_item_t;
+/* typedef int queue_item_t;*/
+// define queue_item_t to void * to fit in p024binary_tree.c
+typedef void * queue_item_t;
 
 typedef struct queue_t{
   int front;

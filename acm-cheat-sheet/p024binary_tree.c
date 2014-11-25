@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "p014stack.c"
-
+#include "p020queue.c"
 
 typedef int tree_node_elem_t;
 
@@ -107,10 +107,26 @@ void post_order(const tree_node_t *root, int (*visit)(const tree_node_t*)){
   }while(!stack_empty(s));
 }
 
+
+void bfs(const tree_node_t *root, int (*visit)(const tree_node_t*)){
+  const tree_node_t *p;
+  queue_t *q = queue_create(20);
+  p = root;
+  queue_push(q, p);
+
+  while(!queue_empty(q)){
+    p = queue_pop(q);
+    visit(p);
+    if(p->left != NULL) queue_push(q, p->left);
+    if(p->right != NULL) queue_push(q, p->right);
+  }
+}
+
+
 int main() {
   tree_node_t *root = malloc(sizeof(tree_node_t));
   init_btree(root);
-  post_order(root, visit);
+  bfs(root, visit);
   printf("\n");
 }
 
