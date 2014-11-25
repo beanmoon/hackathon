@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "p014stack.c"
+
 
 typedef int tree_node_elem_t;
 
@@ -8,6 +10,8 @@ typedef struct tree_node_t{
   struct tree_node_t *right;
   tree_node_elem_t value;
 }tree_node_t;
+
+
 
 void init_btree(tree_node_t *root);
 
@@ -43,12 +47,70 @@ void post_order_r(const tree_node_t *root,  int (*visit)(const tree_node_t*)){
   visit(root);
 }
 
+/**
+ * @brief 先序遍历,非递归. */
+void pre_order(const tree_node_t *root,
+	       int (*visit)(const tree_node_t*)) {
+  const tree_node_t *p;
+  /* stack<const tree_node_t *> s; */
+  stack_type *s = stack_create(20);
+
+  p = root;
+  if(p != NULL) stack_push(s,p);
+  while(!stack_empty(s)) {
+    p = stack_pop(s);
+    visit(p);
+    if(p->right != NULL) stack_push(s,p->right);
+    if(p->left != NULL) stack_push(s,p->left);
+  }
+}
+
+void in_order(const tree_node_t *root, int (*visit)(const tree_node_t*)){
+  const tree_node_t *p;
+  stack_type *s = stack_create(20);
+  
+  p = root;
+  while(!stack_empty(s) || p != NULL){
+    if(p != NULL){
+      stack_push(s, p);
+      p = p->left;
+    } else {
+      p = stack_pop(s);
+      visit(p);
+      p = p->right;
+    }
+  }    
+}
+
+void post_order(const tree_node_t *root, int (*visit)(const tree_node_t*)){
+  const tree_node_t *p, *q;
+  stack_type *s = stack_create(20);
+  
+  p = root;
+  do{
+    while(p != NULL){
+      stack_push(s, p);
+      p = p->left;
+    }
+    q = NULL;
+    while(!stack_empty(s)){
+      p = stack_pop(s);
+      if(p->right == q){
+	visit(p);
+	q = p;
+      }else{
+	stack_push(s, p);
+	p = p->right;
+	break;
+      }
+    }
+  }while(!stack_empty(s));
+}
+
 int main() {
   tree_node_t *root = malloc(sizeof(tree_node_t));
   init_btree(root);
-  int (*func)(const tree_node_t* root);
-  func = visit;
-  pre_order_r(root, func);
+  post_order(root, visit);
   printf("\n");
 }
 

@@ -1,7 +1,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef int stack_elem_t;
+
+/**
+ * @author beanmoon
+ */
+
+/* typedef int stack_elem_t; */
+typedef void * stack_elem_t;
+
 
 typedef struct{
   int size;
@@ -46,5 +53,5 @@ stack_elem_t stack_pop(stack_type *s){
 }
 
 /* int main(){ */
-/*   return 0; */
+/*    return 0; */
 /* } */
