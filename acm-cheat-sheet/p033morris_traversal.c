@@ -3,6 +3,7 @@
 #include "p014stack.c"
 
 typedef int tree_node_elem_t;
+
 typedef struct tree_node_t{
   struct tree_node_t *left;
   struct tree_node_t *right;
