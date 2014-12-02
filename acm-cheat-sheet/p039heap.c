@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef int heap_elem_t;
+/* typedef int heap_elem_t; */
 typedef struct heap_t {
   int size;
   int capacity;
@@ -101,19 +101,20 @@ heap_elem_t heap_pop(heap_t *heap){
 }
 
 
-int main() {
-  heap_t *heap = heap_create(10, cmp_int);
-  heap_push(heap, 10);
-  heap_push(heap, 45);
-  heap_push(heap, 3);
-  heap_push(heap, 23);
-  heap_push(heap, 5);
-  heap_push(heap, 24);
-  heap_push(heap, 1);
-  heap_push(heap, 100);
-  heap_push(heap, 76);
-  while(!heap_empty(heap)){
-    printf("%d ", heap_pop(heap));
-  }
-  printf("\n");
-}
+/* int main() { */
+/*   heap_t *heap = heap_create(10, cmp_int); */
+/*   heap_push(heap, 10); */
+/*   heap_push(heap, 45); */
+/*   heap_push(heap, 3); */
+/*   heap_push(heap, 23); */
+/*   heap_push(heap, 5); */
+/*   heap_push(heap, 24); */
+/*   heap_push(heap, 1); */
+/*   heap_push(heap, 100); */
+/*   heap_push(heap, 76); */
+/*   while(!heap_empty(heap)){ */
+/*     printf("%d ", heap_pop(heap)); */
+/*   } */
+/*   printf("\n"); */
+/*   heap_destroy(heap); */
+/* } */
