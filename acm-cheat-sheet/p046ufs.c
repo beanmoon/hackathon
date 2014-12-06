@@ -7,6 +7,9 @@ typedef struct ufs_t{
   int size;
 }
 
+ufs_t* ufs_create(int n){
+
+}
 int main() {
 
 }
