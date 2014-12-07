@@ -8,7 +8,7 @@ typedef struct ufs_t{
 }
 
 ufs_t* ufs_create(int n){
-
+  ufs_t *ufs = (ufs_t*)malloc(sizeof(ufs_t));
 }
 int main() {
 
